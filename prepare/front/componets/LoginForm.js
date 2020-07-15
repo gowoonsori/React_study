@@ -2,13 +2,14 @@
 *  useMemo   --> 값을 메모
 **/
 import React, { useCallback , useMemo} from 'react';
-import PropTypes from 'prop-types';
 import {Form , Input , Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
+import {useDispatch } from "react-redux";
 
 
 import useInput from "../hooks/useInput";
+import {loginAction} from "../reducers/user";
 
 /* div style 변경시 styled-components이용 방법
 * 이용 하는 이유 --> div style ={} 객체로 설정시 계속 리랜더링 하기 때문에 */
@@ -22,13 +23,15 @@ const FormWrapper = styled(Form)`
   padding : 10px;
 `;
 
-const LoginForm = ({setIsLoggedIn}) => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
+
   const [id,onChangeId] = useInput('');
   const [password,onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
     console.log(id,password);
-    setIsLoggedIn(true);
+    dispatch(loginAction({id,password}));
   },[id,password]);
 
   return (
@@ -50,9 +53,4 @@ const LoginForm = ({setIsLoggedIn}) => {
     </FormWrapper>
   );
 }
-
-LoginForm.propTypes = {
-  setIsLoggedIn: PropTypes.func.isRequired,
-};
-
 export default LoginForm;
