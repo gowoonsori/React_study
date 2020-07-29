@@ -5,6 +5,7 @@ import { RetweetOutlined, HeartOutlined, MessageOutlined, EllipsisOutlined, Hear
 import {useSelector, useDispatch} from "react-redux";
 
 import CommentForm from "./CommentForm";
+import FollowButton from "./FollowButton";
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent'
 import {REMOVE_POST_REQUEST} from "../reducers/post";
@@ -52,6 +53,7 @@ const PostCard = ( {post} ) =>{
             <EllipsisOutlined />
           </Popover>
         ]}
+        extra = {id && <FollowButton post = {post} />}
       >
         <Card.Meta
           avatar = {<Avatar>{post.User.nickname[0]}</Avatar>}
