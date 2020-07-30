@@ -1,11 +1,38 @@
-const http = require('http');
+const express = require('express');
+const postRouter = require('./routes/post');
+const db = require('./models');
+const app = express();
 
-//요청에 뭔지 에 대한 정보 req
-//응답에 대한 정보 res
-const server = http.createServer((req,res) => {
-  console.log(req.url, req.method);
-  res.end("hello node");
+db.sequelize.sync()
+  .then(() => {
+    console.log("db 연결 성공");
+  })
+  .catch(console.error);
+
+/* get 가져오기
+   post 생성하기
+   put 전체 수정
+   delete 제거
+   patch 부분 수정
+   options 찔러보기
+   head 헤더만 가져오기
+*/
+app.get('/', (req,res) =>{
+  res.send('hello express');
 });
-server.listen(3060, ()=>{
-  console.log("실행중");
+app.get('/api', (req,res) =>{
+  res.send('hello api');
+});
+app.get('/posts', (req,res) =>{
+  res.json([
+    {id : 1, content: 'hello1'},
+    {id : 2, content: 'hello2'},
+    {id : 3, content: 'hello3'},
+  ]);
+});
+
+app.use('/post',postRouter);
+
+app.listen(3065, () => {
+  console.log('서버 실행중');
 });
