@@ -10,9 +10,12 @@
   throttle == 시간 설정하여 해당 시간동안 한번만 실행
 * */
 import {all, fork} from 'redux-saga/effects';
+import axios from 'axios';
 
 import postSaga from './post';
 import userSaga from './user';
+
+axios.defaults.baseURL = 'http://localhost:3065';
 
 export default function* rootSaga() {
   yield all([

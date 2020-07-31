@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     nickname : {
       type : DataTypes.STRING(20),
       allowNull: false,          // false ==> 필수 , true ==> 선택
-      unique : true,             // 고유한 값
     },
     password : {
       type : DataTypes.STRING(100),

@@ -1,7 +1,11 @@
 const express = require('express');
+const cors = require('cors');
+
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const db = require('./models');
 const app = express();
+const passportConfig = require('./passport');
 
 db.sequelize.sync()
   .then(() => {
@@ -17,6 +21,19 @@ db.sequelize.sync()
    options 찔러보기
    head 헤더만 가져오기
 */
+passportConfig();
+
+/*front 의 정보(data)를 req 에 붙여줌 */
+app.use(cors({
+  origin : '*',
+}));
+app.use(express.json());                              //json 형태의 데이터 처리
+app.use(express.urlencoded({ extended: true}));  //form submit시에 데이터 처리
+
+/*  req | res
+  헤더 ==> 상태, 용량, 시간,쿠키
+  바디 ==> 데이터
+ */
 app.get('/', (req,res) =>{
   res.send('hello express');
 });
@@ -32,6 +49,7 @@ app.get('/posts', (req,res) =>{
 });
 
 app.use('/post',postRouter);
+app.use('/user',userRouter);
 
 app.listen(3065, () => {
   console.log('서버 실행중');
