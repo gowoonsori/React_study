@@ -1,7 +1,7 @@
 /* useCallback --> 함수를 캐싱
 *  useMemo   --> 값을 메모
 **/
-import React, { useCallback , useMemo} from 'react';
+import React, { useCallback , useEffect } from 'react';
 import {Form , Input , Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -25,13 +25,18 @@ const FormWrapper = styled(Form)`
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const {loginLoading} = useSelector((state) => state.user);
+  const {loginLoading, loginError } = useSelector((state) => state.user);
+
+  useEffect( () => {
+    if(loginError){
+      alert(loginError);
+    }
+  },[loginError]);
 
   const [email ,onChangeEmail] = useInput('');
   const [password,onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
-    console.log(email,password);
     dispatch(loginRequestAction({email,password}));
   },[email,password]);
 

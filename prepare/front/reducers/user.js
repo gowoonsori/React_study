@@ -1,6 +1,12 @@
 import produce from 'immer';
 
 export const initialState = {
+  LoadMyInfoLoading: false,
+  LoadMyInfoDone: false,
+  LoadMyInfoError: null,
+  LoadUserLoading: false,
+  LoadUserDone: false,
+  LoadUserError: null,
   loginLoading: false,
   loginDone: false,
   loginError: null,
@@ -23,6 +29,13 @@ export const initialState = {
   signUpdate: {},
   loginData: {},
 }
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -50,15 +63,6 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_TO_ME';
-
-const dummyUser = (data) => ({
-  ...data,
-  nickname: '의성',
-  id: 1,
-  Posts: [{id: 1}],
-  Followings: [{nickname: "부기초"}, {nickname: "홍"}, {nickname: "의성"}],
-  Followers: [{nickname: "부기초"}, {nickname: "홍"}, {nickname: "의성"}],
-});
 
 /*
 export const loginAction = (data)=> {
@@ -99,7 +103,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOG_IN_SUCCESS:
       draft.loginLoading = false;
       draft.loginDone = true;
-      draft.me = dummyUser(action.data);
+      draft.me = action.data;
       break;
 
     case LOG_IN_FAILURE:
@@ -195,6 +199,40 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UNFOLLOW_FAILURE:
       draft.loginLoading = false;
       draft.loginError = action.error;
+      break;
+
+    case LOAD_MY_INFO_REQUEST:
+      draft.loadInfoMyLoading = true;
+      draft.loadInfoMyError = null;
+      draft.loadInfoMyDone = false;
+      break;
+
+    case LOAD_MY_INFO_SUCCESS:
+      draft.loadInfoMyLoading = false;
+      draft.loadInfoMyDone = true;
+      draft.me = action.data;
+      break;
+
+    case LOAD_MY_INFO_FAILURE:
+      draft.loadInfoMyLoading = false;
+      draft.loadInfoMyError = action.error;
+      break;
+
+    case LOAD_USER_REQUEST:
+      draft.loadUserLoading = true;
+      draft.loadUserError = null;
+      draft.loadUserDone = false;
+      break;
+
+    case LOAD_USER_SUCCESS:
+      draft.loadUserLoading = false;
+      draft.loadUserDone = true;
+      draft.me = action.data;
+      break;
+
+    case LOAD_USER_FAILURE:
+      draft.loadUserLoading = false;
+      draft.loadUserError = action.error;
       break;
 
     default:
