@@ -25,6 +25,10 @@ const FollowButton = ({post}) => {
     }
   },[isFollowing]);
 
+  if(post.User.id === me.id){
+    return null;
+  }
+
   return (
     <Button loading = {followLoading || unfollowLoading} onClick = {onClickButton}>
       {isFollowing ? '언팔로우' :'팔로우'}
@@ -37,7 +41,7 @@ FollowButton.propTypes = {
     id : PropTypes.number,
     User : PropTypes.object,
     content : PropTypes.string,
-    createdAt : PropTypes.object,
+    createdAt : PropTypes.string,
     Comments : PropTypes.arrayOf(PropTypes.object),
     Images : PropTypes.arrayOf(PropTypes.object),
   }).isRequired,

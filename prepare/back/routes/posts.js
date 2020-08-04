@@ -5,6 +5,7 @@ const router = express.Router();
 
 /*데이터 가져올 때 (include) 모든 정보 가져오기*/
 
+/*모든 게시글 불러오기 ( 10개 씩 )*/
 router.get('/', async (req, res, next) => {
   try{
     const where = {};
@@ -15,18 +16,23 @@ router.get('/', async (req, res, next) => {
       where,
       limit : 10,
       //offset : 10, // 10~20
-      order : [['createdAt','DESC'],  [Comment, 'createdAt', 'DESC'],],
+      order : [['createdAt','DESC']],
       include : [{
-        model : User,
+        model : User,                 //게시글 작성자
         attributes : ['id', 'nickname'],
       },{
         model : Image,
       },{
         model : Comment,
         include : [{
-          model : User,
+          model : User,                 //댓글 작성자
           attributes : ['id', 'nickname'],
+          order : [['createdAt','DESC']],
         }]
+      }, {
+          model : User,                 //좋아요 한사람
+          as : 'Likers',
+          attributes : ['id'],
       }],
     });
     res.status(200).json(posts);

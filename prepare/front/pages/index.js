@@ -10,7 +10,7 @@ import {LOAD_MY_INFO_REQUEST} from "../reducers/user";
 const Home = () =>{
     const dispatch = useDispatch();
     const { me } = useSelector((state) => state.user);
-    const { mainPosts , hasMorePosts , loadPostLoading} = useSelector((state) => state.post);
+    const { mainPosts , hasMorePosts , loadPostLoading, } = useSelector((state) => state.post);
 
     useEffect(()=>{
         dispatch({

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -37,7 +38,9 @@ app.use(cors({
   credentials : true,
 }));
 
-app.use(express.json());                              //json 형태의 데이터 처리
+//__dirname 현재 폴더
+app.use('/',express.static(path.join(__dirname, 'uploads')));   // 경로 string 붙일때 +안쓰고 path.join을 씀 ==> 운영체제마다 파일경로(/ | \)이 다르다.
+app.use(express.json());                              //json 형태의 데이터 처리 (axios)
 app.use(express.urlencoded({ extended: true}));  //form submit시에 데이터 처리
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
