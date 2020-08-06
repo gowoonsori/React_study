@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Hashtag = sequelize.define('Hashtag', {
+    id : {
+      type : DataTypes.INTEGER,
+      autoIncrement : true,
+      primaryKey : true,
+    },
     name: {
       type: DataTypes.STRING(100),
       allowNull: false,          // false ==> 필수 , true ==> 선택

@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');   //node 제공
 const fs = require('fs')  //filesystem
 
-const { Post, User, Comment,Image, Hashtag } = require('../models');
+const { Post, User, Comment, Image, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -216,6 +216,10 @@ router.delete('/:postId/like', isLoggedIn ,async (req,res) =>{
 /*게시글 삭제 */
 router.delete('/:postId', isLoggedIn ,async (req,res) =>{
   try{
+    console.log(req.params.postId);
+    await Comment.destroy({
+      where :{ PostId : req.params.postId },
+    });
     await Post.destroy({
       where : {
         id :req.params.postId ,
@@ -229,6 +233,21 @@ router.delete('/:postId', isLoggedIn ,async (req,res) =>{
   }
 });
 
+//댓글 삭제
+router.delete('/:postId', isLoggedIn, async (req, res, next) => { // DELETE /post/10
+  try {
+    await Post.destroy({
+      where: {
+        id: req.params.postId,
+        UserId: req.user.id,
+      },
+    });
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 /*게시글 한개 불러오기*/
 router.get('/:postId', async (req, res, next) => {
