@@ -4,11 +4,21 @@ import produce from 'immer';
 
 export const initialState = {
   mainPosts: [],
+  singlePost :null,
   imagePaths: [],
   hasMorePosts : true,
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
+  loadUserPostLoading: false,
+  loadUserPostDone: false,
+  loadUserPostError: null,
+  loadHashtagPostsLoading: false,
+  loadHashtagPostsDone: false,
+  loadHashtagPostsError: null,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -27,6 +37,9 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
 }
 /* dummy게시글
 export const generateDummyPost = (number) => Array(number).fill().map(() => ({
@@ -48,10 +61,21 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
   }],
 }));
 */
-
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST'
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS'
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE'
+
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST'
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS'
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTs_FAILURE'
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST'
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS'
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE'
+
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS'
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE'
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST'
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
@@ -79,6 +103,11 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST'
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS'
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE'
 
+export const RETWEET_REQUEST =  'RETWEET_REQUEST'
+export const RETWEET_SUCCESS =  'RETWEET_SUCCESS'
+export const RETWEET_FAILURE =  'RETWEET_FAILURE'
+
+
 export const addComment = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
@@ -95,8 +124,7 @@ const reducer = (state = initialState, action) => {
         break;
 
       case LOAD_POST_SUCCESS:
-        draft.mainPosts= action.data.concat(draft.mainPosts);
-        draft.hasMorePosts = draft.mainPosts.length < 50;
+        draft.singlePost = action.data;
         draft.loadPostLoading = false;
         draft.loadPostDone = true;
         break;
@@ -105,6 +133,31 @@ const reducer = (state = initialState, action) => {
         draft.loadPostLoading = false;
         draft.loadPostError = action.error;
         break;
+
+      case LOAD_HASHTAG_POSTS_REQUEST :
+      case LOAD_USER_POSTS_REQUEST :
+      case LOAD_POSTS_REQUEST :
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+
+      case LOAD_HASHTAG_POSTS_SUCCESS:
+      case LOAD_USER_POSTS_SUCCESS:
+      case LOAD_POSTS_SUCCESS:
+        draft.mainPosts= draft.mainPosts.concat(action.data);
+        draft.hasMorePosts = draft.mainPosts.length === 10;
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        break;
+
+      case LOAD_USER_POSTS_FAILURE :
+      case LOAD_HASHTAG_POSTS_FAILURE :
+      case LOAD_POSTS_FAILURE :
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
+
 
       case ADD_POST_REQUEST :
         draft.addPostLoading = true;
@@ -208,15 +261,32 @@ const reducer = (state = initialState, action) => {
       case UNLIKE_POST_SUCCESS:{
         const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
         post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId); //제거는 splice(정석) 나 filter사용
-        draft.likePostLoading = false;
-        draft.likePostDone = true;
+        draft.unLikePostLoading = false;
+        draft.unLikePostDone = true;
         break;
       }
-
 
       case UNLIKE_POST_FAILURE :
         draft.unLikePostLoading = false;
         draft.unLikePostError = action.error;
+        break;
+
+      case RETWEET_REQUEST :
+        draft.retweetLoading = true;
+        draft.retweetDone = false;
+        draft.retweetError = null;
+        break;
+
+      case RETWEET_SUCCESS: {
+        draft.retweetLoading = false;
+        draft.retweetDone = true;
+        draft.mainPosts.unshift(action.data);
+        break;
+      }
+
+      case RETWEET_FAILURE :
+        draft.retweetLoading = false;
+        draft.retweetError = action.error;
         break;
 
       default:
