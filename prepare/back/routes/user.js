@@ -38,7 +38,40 @@ router.get('/', async (req, res ,next) => {
     console.error(error);
     next(error);
   }
-})
+});
+
+/*팔로우 목록 가져오기*/
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  try{
+    const user = await User.findOne( {where : {id : req.user.id}});
+    if(!user){
+      res.status(403).send('없는 사람을 찾으려고 합니다.');
+    }
+    const followers = await user.getFollowers({
+      limit : 3,
+    });
+    res.status(200).json(followers);
+  }catch(error){
+    console.error(error);
+    next(error);
+  }
+});
+/*팔로잉한사람*/
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  try{
+    const user = await User.findOne( {where : {id : req.user.id}});
+    if(!user){
+      res.status(403).send('없는 사람을 찾으려고 합니다.');
+    }
+    const followings = await user.getFollowings({
+      limit : 3,
+    });
+    res.status(200).json(followings);
+  }catch(error){
+    console.error(error);
+    next(error);
+  }
+});
 
 /*로그인하고난 후  다른 사람 user 정보 불러오기*/
 router.get('/:userId', async (req, res ,next) => {
@@ -187,35 +220,6 @@ router.delete('/:userId/follow', isLoggedIn, async (req,res,next) => {
     }
     await user.removeFollowers(req.user.id);
     res.status(200).json( { UserId : parseInt( req.params.userId,10 )});
-  }catch(error){
-    console.error(error);
-    next(error);
-  }
-});
-
-/*팔로우 목록 가져오기*/
-router.get('/followers', isLoggedIn, async (req, res, next) => {
-  try{
-    const user = await User.findOne( {where : {id : req.user.id}});
-    if(!user){
-      res.status(403).send('없는 사람을 찾으려고 합니다.');
-    }
-    const followers = await user.getFollowers();
-    res.status(200).json(followers);
-  }catch(error){
-    console.error(error);
-    next(error);
-  }
-});
-
-router.get('/followings', isLoggedIn, async (req, res, next) => {
-  try{
-    const user = await User.findOne( {where : {id : req.user.id}});
-    if(!user){
-      res.status(403).send('없는 사람을 찾으려고 합니다.');
-    }
-    const followings = await user.getFollowings();
-    res.status(200).json(followings);
   }catch(error){
     console.error(error);
     next(error);

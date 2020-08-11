@@ -1,8 +1,10 @@
-import React, {useState, useCallback } from 'react';
+import React, {useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {Card, Popover, Button, Avatar, Comment, List} from 'antd';
 import {RetweetOutlined, HeartOutlined, MessageOutlined, EllipsisOutlined, HeartTwoTone} from '@ant-design/icons';
 import {useSelector, useDispatch} from "react-redux";
+import Link from 'next/link';
+import dayjs from 'dayjs';
 
 import CommentForm from "./CommentForm";
 import FollowButton from "./FollowButton";
@@ -10,9 +12,11 @@ import PostImages from './PostImages';
 import PostCardContent from './PostCardContent'
 import {LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST} from "../reducers/post";
 
+dayjs.locale('ko');
+
 const PostCard = ({post}) => {
   const dispatch = useDispatch();
-  const { removePostLoading } = useSelector((state) => state.post);
+  const {removePostLoading} = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState('');
   const id = useSelector((state) => state.user.me?.id);
 
@@ -78,7 +82,7 @@ const PostCard = ({post}) => {
               {id && post.User.id === id ? (
                 <>
                   <Button>수정</Button>
-                  <Button type="danger" loading = {removePostLoading} onClick={onRemovePost}>삭제</Button>
+                  <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>삭제</Button>
                 </>
               ) : <Button>신고</Button>}
             </Button.Group>
@@ -86,7 +90,7 @@ const PostCard = ({post}) => {
             <EllipsisOutlined/>
           </Popover>
         ]}
-        title = {post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null }
+        title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
         extra={id && <FollowButton post={post}/>}
       >
         {post.RetweetId && post.Retweet
@@ -94,19 +98,26 @@ const PostCard = ({post}) => {
             <Card
               cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images}/>}
             >
+              <div style={{float: 'right'}}>{dayjs(post.createdAt).format('YYYY-MM-DD')}</div>
               <Card.Meta
-                avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+                avatar={<Link
+                  href={`/user/${post.Retweet.User.id}`}><a><Avatar>{post.User.nickname[0]}</Avatar></a></Link>}
                 title={post.User.nickname}
                 description={<PostCardContent postData={post.Retweet.content}/>}
               />
             </Card>
           )
           : (
-            <Card.Meta
-              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-              title={post.User.nickname}
-              description={<PostCardContent postData={post.content}/>}
-            />
+            <>
+              <div style={{float: 'right'}}>{dayjs(post.createdAt).format('YYYY-MM-DD')}</div>
+              <Card.Meta
+                avatar={
+                  <Link href={`/user/${post.User.id}`}><a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                  </Link>}
+                title={post.User.nickname}
+                description={<PostCardContent postData={post.content}/>}
+              />
+            </>
           )}
       </Card>
       {commentFormOpened && (
@@ -120,7 +131,7 @@ const PostCard = ({post}) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={<Link href={`/user/${item.User.id}`}><a><Avatar>{item.User.nickname[0]}</Avatar></a></Link>}
                   content={item.content}
                 />
               </li>
@@ -143,7 +154,7 @@ PostCard.propTypes = {
     Images: PropTypes.arrayOf(PropTypes.object),
     Likers: PropTypes.arrayOf(PropTypes.object),
     RetweetId: PropTypes.number,
-    Retweet : PropTypes.arrayOf(PropTypes.object),
+    Retweet: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 }
 
