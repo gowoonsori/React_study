@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');   //node 제공
 const fs = require('fs')  //filesystem
+const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk');
 
 const { Post, User, Comment, Image, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -16,9 +18,15 @@ try{
   fs.mkdirSync('uploads');
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey : process.env.S3_SECRET_ACCESS_KEY,
+  region :'ap-northeast-2',
+});
+
 /*이미지 업로드*/
 const upload = multer({
-  storage : multer.diskStorage({
+  /*storage : multer.diskStorage({
     destination(req, file, done){
       done(null, 'uploads');
     },
@@ -27,6 +35,13 @@ const upload = multer({
       const basename = path.basename(file.originalname, ext)  //파일 이름  (의성)
       done(null, basename +'_'+ new Date().getTime() + ext);    //의성20151545.png
     },
+  }),*/
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: 'react-nodebird-gowoonsori',
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+    }
   }),
   limits : { fileSize : 20 * 1024 * 1024 },  //20MB
 });
@@ -84,7 +99,8 @@ router.post('/', isLoggedIn, upload.none(), async (req,res,next) =>{
 // upload 속성 : array, none, single, fields
 router.post('/images', isLoggedIn, upload.array('image'), async  (req, res) => {
   console.log(req.files);
-  res.json(req.files.map((v) => v.filename));
+  //res.json(req.files.map((v) => v.filename));   //localfile
+  res.json(req.files.map((v) => v.location));   //s3
 });
 
 
