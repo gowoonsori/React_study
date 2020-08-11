@@ -45,7 +45,7 @@ export const ImgWrapper = styled.div`
   text-align : center;
   & img {
     margin: 0 auto;
-    max-height : 750px;
+    max-height : 400px;
    }
 `;
 
