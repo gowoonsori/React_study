@@ -36,12 +36,11 @@ passportConfig();
 
 /*front 의 정보(data)를 req 에 붙여줌 */
 if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
   app.use(cors({
-    origin: 'https://gowoonsori.site',
+    origin: 'http://gowoonsori.site',
     credentials: true,
   }));
 } else {
