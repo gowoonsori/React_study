@@ -26,5 +26,5 @@
   morgan 이용하여 error , post 등 요청 확인하기 ( 61% 진행 )
 - 2020.08.04 : 팔로우 , 언팔로우 기능 / 게시글 제거 / 닉네임 변경 / multer, fs, path 이용한 이미지 업로드 / express.static(미들웨어)이용하여 이미지 파일 경로 생성 / (정규 표현식 이용)해시태그 등록 ( 68% 진행 )
 - 2020.08.06 : 리트윗 기능 구현 / 게시글load시 querystring or lastId 방식 사용 / ssr 기능 구현(ssr시 쿠기 공유하기 / success후 ssr끝내기) , ssr 함수 비교 / dynamic routing (많은 페이지 생성을 막음) / css SSR / 해시태그,사용자 정보 검색 ( 77% 진행 )
-- 2020.08.11 : swr사용하여 reducer이벤트 간소화하기 / 해시태그 검색 / dayjs사용 / next 빌드 / 커스텀 웹팩 , bundle-analyzer / aws배포 위해 ec2생성 ( 84.6% )
+- 2020.08.11 : swr사용하여 reducer이벤트 간소화하기 / 해시태그 검색 / dayjs사용 / next 빌드 / 커스텀 웹팩 , bundle-analyzer / aws배포 위해 ec2생성 / ubuntu에 node, mysql, pm2 설치하여 배포하기 / 도메인 연결하기 ( 92% )
 ##### [인프런 / React로 Node Bird SNS 만들기 : 조현영 ](https://www.inflearn.com/course/%EB%85%B8%EB%93%9C%EB%B2%84%EB%93%9C-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%A6%AC%EB%89%B4%EC%96%BC#)
