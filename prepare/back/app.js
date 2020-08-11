@@ -6,6 +6,8 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -14,16 +16,15 @@ const hashtagRouter = require('./routes/hashtag');
 const db = require('./models');
 const passportConfig = require('./passport');
 
-const app = express();
-
 dotenv.config();
+const app = express();
 db.sequelize.sync()
   .then(() => {
     console.log("db 연결 성공");
   })
   .catch(console.error);
 passportConfig();
-app.use(morgan('dev'));
+
 /* get 가져오기
    post 생성하기
    put 전체 수정
@@ -34,10 +35,22 @@ app.use(morgan('dev'));
 */
 
 /*front 의 정보(data)를 req 에 붙여줌 */
-app.use(cors({
-  origin : ['http://localhost:3060', 'gowoonsori.site'],
-  credentials : true,
-}));
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+  app.use(cors({
+    origin: 'https://gowoonsori.site',
+    credentials: true,
+  }));
+} else {
+  app.use(morgan('dev'));
+  app.use(cors({
+    origin: true,
+    credentials: true,
+  }));
+}
 
 //__dirname 현재 폴더
 app.use('/',express.static(path.join(__dirname, 'uploads')));   // 경로 string 붙일때 +안쓰고 path.join을 씀 ==> 운영체제마다 파일경로(/ | \)이 다르다.
@@ -50,7 +63,7 @@ app.use(session({
   secret : process.env.COOKIE_SECRET,
   cookie : {
     httpOnly : true,
-    secure : false,
+    secure : true,
     domain : process.env.NODE_ENV === 'production' && '.gowoonsori.site'
   }
 }));
