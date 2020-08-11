@@ -35,7 +35,7 @@ app.use(morgan('dev'));
 
 /*front 의 정보(data)를 req 에 붙여줌 */
 app.use(cors({
-  origin : 'http://localhost:3060',
+  origin : ['http://localhost:3060', 'gowoonsori.kro.kr'],
   credentials : true,
 }));
 
@@ -48,6 +48,11 @@ app.use(session({
   saveUninitialized : false,
   resave : false,
   secret : process.env.COOKIE_SECRET,
+  cookie : {
+    httpOnly : true,
+    secure : false,
+    domain : process.env.NODE_ENV === 'production' && '.gowoonsori.kro.kr'
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -1,0 +1,1 @@
+export const backUrl = 'http://api.gowoonsori.kro.kr';
