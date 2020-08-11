@@ -62,9 +62,9 @@ app.use(session({
   secret : process.env.COOKIE_SECRET,
   cookie : {
     httpOnly : true,
-    secure : true,
+    secure : false,
     domain : process.env.NODE_ENV === 'production' && '.gowoonsori.site'
-  }
+  },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -76,7 +76,6 @@ app.use(passport.session());
 app.get('/', (req,res) =>{
   res.send('hello express');
 });
-
 
 app.use('/posts',postsRouter);
 app.use('/post',postRouter);
