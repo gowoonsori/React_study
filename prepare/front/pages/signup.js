@@ -121,7 +121,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   context.store.dispatch({
     type : LOAD_MY_INFO_REQUEST,
   })
-
   context.store.dispatch(END);                // request후 sucess가 될때까지 기다린후
   await context.store.sagaTask.toPromise();   // 렌더링 끝내기
 });
