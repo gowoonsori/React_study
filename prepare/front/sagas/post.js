@@ -1,4 +1,4 @@
-import {all,call, fork,takeLatest, put , throttle} from 'redux-saga/effects';
+import {all,call, fork,takeLatest, put } from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
@@ -247,13 +247,13 @@ function* retweet(action) {
 }
 
 function* watchLoadPosts() {
-  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+  yield takeLatest( LOAD_POSTS_REQUEST, loadPosts);
 }
 function* watchLoadUserPosts() {
-  yield throttle(5000, LOAD_USER_POSTS_REQUEST, loadUserPosts);
+  yield takeLatest( LOAD_USER_POSTS_REQUEST, loadUserPosts);
 }
 function* watchLoadHashtagPosts() {
-  yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+  yield takeLatest( LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
 function* watchLoadPost() {
   yield takeLatest( LOAD_POST_REQUEST, loadPost);
