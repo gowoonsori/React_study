@@ -6,7 +6,7 @@ import axios from "axios";
 import {END} from "redux-saga";
 import useSWR from 'swr';
 
-import backUrl from '../config/config'
+import { backUrl } from '../config/config'
 import AppLayout from "../componets/AppLayout";
 import FollowList from "../componets/FollowList";
 import NicknameEditForm from "../componets/NicknameEditForm";
