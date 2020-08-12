@@ -104,7 +104,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   });
   context.store.dispatch(END);
   await context.store.sagaTask.toPromise();
-  console.log('getState', context.store.getState().post.mainPosts);
 });
 
 export default User;
