@@ -102,7 +102,7 @@ const PostCard = ({post}) => {
               <Card.Meta
                 avatar={<Link
                   href={`/user/${post.Retweet.User.id}`}><a><Avatar>{post.User.nickname[0]}</Avatar></a></Link>}
-                title={post.User.nickname}
+                title={post.Retweet.User.nickname}
                 description={<PostCardContent postData={post.Retweet.content}/>}
               />
             </Card>
