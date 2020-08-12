@@ -8,7 +8,7 @@ exports.handler = async (event, context, callback) =>{
   const Key = event.Records[0].s3.object.key;
   console.log(Bucket, Key);
   const filename = Key.split('/')[Key.split('/').length - 1];
-  const ext = Key.split('.')[Key.split('/').length - 1];
+  const ext = Key.split('.')[Key.split('.').length - 1];
   const requiredFormat = ext === 'jpg' ? 'jpeg' : ext;
   console.log('filename', filename, 'ext',ext);
 
@@ -16,7 +16,7 @@ exports.handler = async (event, context, callback) =>{
     const s3Object = await s3.getObject({ Bucket, Key}).promise();
     console.log('original', s3Object.Body.length);
     const resizedImage = await sharp(s3Object.Body)
-      .resize(200,200, {fit: 'inside'})
+      .resize(400,200, {fit: 'inside'})
       .toFormat(requiredFormat)
       .toBuffer();
     await s3.putObject({
