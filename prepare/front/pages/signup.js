@@ -75,6 +75,11 @@ const Signup = () => {
       <AppLayout>
           <Head>
               <meta charSet="utf-8"/>
+              <meta name="description" content={'gowoonsori 회원가입 페이지입니다'} />
+              <meta property="og:title" content={'회원가입'}/>
+              <meta property="og:description" content={'gowoonsori 회원가입 페이지입니다'} />
+              <meta property="og:image" content='https://gowoonsori.site/favicon.ico'/>
+              <meta property="og:url" content={`https://gowoonsori.site/signup`} />
               <title>회원 가입</title>
           </Head>
           <Form onFinish = {onSubmit}>
