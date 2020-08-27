@@ -20,9 +20,9 @@ const loggerMiddleware = ({dispatch, getState }) => (next) => (action) =>{
 
 const configureStore = () =>{
   const sagaMiddleware = createSagaMiddleWare();
-  const middleware = [sagaMiddleware,loggerMiddleware];
   const enhancer = process.env.NODE_ENV === 'production'
-    ? compose(applyMiddleware(...middleware)) : composeWithDevTools(applyMiddleware(...middleware));
+    ? compose(applyMiddleware(sagaMiddleware))
+    : composeWithDevTools(applyMiddleware(sagaMiddleware,loggerMiddleware));
   const store = createStore(reducer,enhancer);     // "dispatch"명령어를 통하여 action이 수행될때 해당 action이 무엇을 수행할지 미리 선언해놓은 것
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
