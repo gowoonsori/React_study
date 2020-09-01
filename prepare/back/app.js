@@ -64,7 +64,7 @@ app.use(session({
   proxy : true,
   cookie : {
     httpOnly : true,
-    secure : true,
+    secure : (process.env.NODE_ENV === 'production' ? true : false),
     domain : process.env.NODE_ENV === 'production' && '.gowoonsori.site'
   },
 }));
@@ -89,7 +89,13 @@ app.use((err, req, res, next) => {
 
 });
 */
-
-app.listen(3065, () => {
-  console.log('서버 실행중');
-});
+if (process.env.NODE_ENV === 'production'){
+  app.listen(3065, () => {
+    console.log('서버 실행중');
+  });
+}
+else {
+  app.listen(80, () => {
+    console.log('dev 서버 실행중');
+  });
+}
