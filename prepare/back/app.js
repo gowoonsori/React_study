@@ -95,7 +95,7 @@ if (process.env.NODE_ENV === 'production'){
   });
 }
 else {
-  app.listen(80, () => {
+  app.listen(81, () => {
     console.log('dev 서버 실행중');
   });
 }
