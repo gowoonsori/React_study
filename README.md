@@ -1,7 +1,6 @@
 # React_Study
 
-## 리액트를 이용하여 트위터 만들기 
-## 사이트 주소 : [gowoonsori.site](https://gowoonsori.site) 
+## 리액트를 이용하여 트위터 만들기  
 
 ### :books: 사용 스택 : 
 - react
