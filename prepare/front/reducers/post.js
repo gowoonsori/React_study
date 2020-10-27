@@ -190,7 +190,7 @@ const reducer = (state = initialState, action) => {
         break;
 
       case UPDATE_POST_SUCCESS:
-        draft.mainPosts.find((v)=> v.id === action.data.PostId).content = action.data.content;
+        draft.mainPosts.find((v)=> {v.id === action.data.PostId}).content = action.data.content;
         draft.updatePostLoading = false;
         draft.updatePostDone = true;
         break;
@@ -219,7 +219,7 @@ const reducer = (state = initialState, action) => {
         break;
 
       case REMOVE_IMAGE :
-        draft.imagePaths = draft.imagePaths.filter((v,i) => i !== action.data);
+        draft.imagePaths = draft.imagePaths.filter((v,i) => {i !== action.data});
         break;
 
       case ADD_COMMENT_REQUEST :
@@ -229,7 +229,7 @@ const reducer = (state = initialState, action) => {
         break;
 
       case ADD_COMMENT_SUCCESS: {
-        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        const post = draft.mainPosts.find((v) => {v.id === action.data.PostId});
         post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
@@ -247,7 +247,7 @@ const reducer = (state = initialState, action) => {
         break;
 
       case REMOVE_POST_SUCCESS:
-        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.PostId);
+        draft.mainPosts = draft.mainPosts.filter((v) => {v.id !== action.PostId});
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;
@@ -283,8 +283,8 @@ const reducer = (state = initialState, action) => {
         break;
 
       case UNLIKE_POST_SUCCESS:{
-        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId); //제거는 splice(정석) 나 filter사용
+        const post = draft.mainPosts.find((v) => {v.id === action.data.PostId});
+        post.Likers = post.Likers.filter((v) => {v.id !== action.data.UserId}); //제거는 splice(정석) 나 filter사용
         draft.unLikePostLoading = false;
         draft.unLikePostDone = true;
         break;
