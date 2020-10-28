@@ -1,22 +1,23 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { END } from 'redux-saga';
-
+import {useRouter} from 'next/router';
+import {END} from 'redux-saga';
 import axios from 'axios';
-import { LOAD_POST_REQUEST } from '../../reducers/post';
+
 import wrapper from '../../store/configureStore';
-import PostCard from '../../componets/PostCard';
-import AppLayout from '../../componets/AppLayout';
-import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
+import {LOAD_POST_REQUEST} from '../../reducers/post';
+import {LOAD_MY_INFO_REQUEST} from '../../reducers/user';
+
+import PostCard from '../../components/PostCard';
+import AppLayout from '../../components/AppLayout';
 
 const Post = () => {
-  const { singlePost } = useSelector((state) => state.post);
+  const {singlePost} = useSelector((state) => state.post);
   const router = useRouter();
-  const { id } = router.query;
+  const {id} = router.query;
 
-   /*if (router.isFallback) {
+  /*if (router.isFallback) {
      return <div>Loading...</div>
    }*/
 
@@ -30,7 +31,10 @@ const Post = () => {
         <meta name="description" content={singlePost.content} />
         <meta property="og:title" content={`${singlePost.User.nickname}님의 게시글`} />
         <meta property="og:description" content={singlePost.content} />
-        <meta property="og:image" content={singlePost.Images[0] ? singlePost.Images[0].src : 'https://gowoonsori.site/favicon.ico'} />
+        <meta
+          property="og:image"
+          content={singlePost.Images[0] ? singlePost.Images[0].src : 'https://gowoonsori.site/favicon.ico'}
+        />
         <meta property="og:url" content={`https://gowoonsori.site/post/${id}`} />
       </Head>
       <PostCard post={singlePost} />

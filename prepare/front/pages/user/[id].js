@@ -1,23 +1,24 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Card } from 'antd';
-import { END } from 'redux-saga';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Avatar, Card} from 'antd';
+import {END} from 'redux-saga';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-
+import {useRouter} from 'next/router';
 import axios from 'axios';
-import { LOAD_USER_POSTS_REQUEST } from '../../reducers/post';
-import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
-import PostCard from '../../componets/PostCard';
+
 import wrapper from '../../store/configureStore';
-import AppLayout from '../../componets/AppLayout';
+import {LOAD_USER_POSTS_REQUEST} from '../../reducers/post';
+import {LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST} from '../../reducers/user';
+
+import PostCard from '../../components/PostCard';
+import AppLayout from '../../components/AppLayout';
 
 const User = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { id } = router.query;
-  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
-  const { userInfo, me } = useSelector((state) => state.user);
+  const {id} = router.query;
+  const {mainPosts, hasMorePosts, loadPostsLoading} = useSelector((state) => state.post);
+  const {userInfo, me} = useSelector((state) => state.user);
 
   useEffect(() => {
     const onScroll = () => {
@@ -50,35 +51,30 @@ const User = () => {
         <meta property="og:image" content="https://gowoonsori.site/favicon.ico" />
         <meta property="og:url" content={`https://gowoonsori.site/user/${id}`} />
       </Head>
-      {userInfo && (userInfo.id !== me?.id)
-        ? (
-          <Card
-            style ={ {marginBottom : 20}}
-            actions={[
-              <div key="twit">
-                짹짹
-                <br />
-                {userInfo.Posts}
-              </div>,
-              <div key="following">
-                팔로잉
-                <br />
-                {userInfo.Followings}
-              </div>,
-              <div key="follower">
-                팔로워
-                <br />
-                {userInfo.Followers}
-              </div>,
-            ]}
-          >
-            <Card.Meta
-              avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
-              title={userInfo.nickname}
-            />
-          </Card>
-        )
-        : null}
+      {userInfo && userInfo.id !== me?.id ? (
+        <Card
+          style={{marginBottom: 20}}
+          actions={[
+            <div key="twit">
+              짹짹
+              <br />
+              {userInfo.Posts}
+            </div>,
+            <div key="following">
+              팔로잉
+              <br />
+              {userInfo.Followings}
+            </div>,
+            <div key="follower">
+              팔로워
+              <br />
+              {userInfo.Followers}
+            </div>,
+          ]}
+        >
+          <Card.Meta avatar={<Avatar>{userInfo.nickname[0]}</Avatar>} title={userInfo.nickname} />
+        </Card>
+      ) : null}
       {mainPosts.map((c) => (
         <PostCard key={c.id} post={c} />
       ))}

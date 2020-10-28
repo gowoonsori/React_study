@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.css';
 import Head from 'next/head';
 
-import wrapper from '../store/configureStore.js'
+import wrapper from '../store/configureStore.js';
 
 const NodeBird = ({Component}) => {
-    return (
-        <>
-            <Head>
-                <meta charSet = "utf-8" />
-                <title>Node bird</title>
-            </Head>
-            <Component />
-        </>
-    )
+  return (
+    <>
+      <Head>
+        <meta charSet="utf-8" />
+        <title>Node bird</title>
+      </Head>
+      <Component />
+    </>
+  );
 };
 
 NodeBird.propTypes = {
-    Component: PropTypes.elementType.isRequired,
-}
+  Component: PropTypes.elementType.isRequired,
+};
 
 export default wrapper.withRedux(NodeBird);
