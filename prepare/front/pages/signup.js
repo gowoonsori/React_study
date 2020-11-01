@@ -75,7 +75,7 @@ const Signup = () => {
   }, [password, passwordCheck, term]);
 
   return (
-    <AppLayout>
+    <div>
       <Head>
         <meta charSet="utf-8" />
         <title>회원 가입</title>
@@ -114,7 +114,7 @@ const Signup = () => {
           </Button>
         </div>
       </Form>
-    </AppLayout>
+    </div>
   );
 };
 
