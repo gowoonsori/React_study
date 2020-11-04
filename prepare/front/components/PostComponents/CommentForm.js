@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
-import useInput from '../hooks/useInput';
-import {Form, Input, Button} from 'antd';
 import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 
-import {ADD_COMMENT_REQUEST} from '../reducers/post';
+import useInput from '../../hooks/useInput';
+import {ADD_COMMENT_REQUEST} from '../../reducers/post';
 /*Form 수작업하기 반복작업이기 때문에 폼 라이브러리 사용하면 편함*/
+import {Form, Input, Button} from 'antd';
 
 const CommentForm = ({post}) => {
   const dispatch = useDispatch();

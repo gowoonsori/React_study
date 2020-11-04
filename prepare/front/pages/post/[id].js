@@ -9,7 +9,7 @@ import wrapper from '../../store/configureStore';
 import {LOAD_POST_REQUEST} from '../../reducers/post';
 import {LOAD_MY_INFO_REQUEST} from '../../reducers/user';
 
-import PostCard from '../../components/PostCard';
+import PostCard from '../../components/PostComponents/PostCard';
 import AppLayout from '../../components/AppLayout';
 
 const Post = () => {

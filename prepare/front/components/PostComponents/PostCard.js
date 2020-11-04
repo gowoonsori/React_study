@@ -7,7 +7,7 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 
 import CommentForm from './CommentForm';
-import FollowButton from './FollowButton';
+import FollowButton from '../FollowButton';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import {
@@ -16,7 +16,7 @@ import {
   UNLIKE_POST_REQUEST,
   RETWEET_REQUEST,
   UPDATE_POST_REQUEST,
-} from '../reducers/post';
+} from '../../reducers/post';
 
 dayjs.locale('ko');
 

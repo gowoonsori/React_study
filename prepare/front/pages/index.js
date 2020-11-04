@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import {END} from 'redux-saga';
+import Router from 'next/router';
 
 import AppLayout from '../components/AppLayout';
-import PostForm from '../components/PostForm';
-import PostCard from '../components/PostCard';
+import PostForm from '../components/PostComponents/PostForm';
+import PostCard from '../components/PostComponents/PostCard';
 
 import {LOAD_POSTS_REQUEST} from '../reducers/post';
 import {LOAD_MY_INFO_REQUEST} from '../reducers/user';
@@ -21,6 +22,12 @@ const Home = () => {
       alert(retweetError);
     }
   }, [retweetError]);
+
+  useEffect(() => {
+    if (!me) {
+      Router.replace('/login');
+    }
+  }, [me]);
 
   /*무한 스크롤 시 스크롤 너비 사용자 정의*/
   useEffect(() => {
@@ -42,12 +49,16 @@ const Home = () => {
   }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
-    <AppLayout>
-      {me && <PostForm />}
-      {mainPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
-    </AppLayout>
+    <div>
+      {me && (
+        <AppLayout>
+          {me && <PostForm />}
+          {mainPosts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </AppLayout>
+      )}
+    </div>
   );
 };
 

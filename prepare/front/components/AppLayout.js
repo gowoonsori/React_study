@@ -11,7 +11,14 @@ import useInput from '../hooks/useInput';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 import styled from 'styled-components';
-import {TwitterOutlined, UserOutlined, LoginOutlined, LogoutOutlined} from '@ant-design/icons';
+import {
+  TwitterOutlined,
+  UserOutlined,
+  EditOutlined,
+  HomeOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
@@ -44,44 +51,57 @@ const AppLayout = ({children}) => {
   return (
     <div>
       <Row gutter={8}>
-        <Col xs={24} md={4}>
-          <Menu style={{textAlign: 'center'}}>
-            <Menu.Item style={{margin: '30px'}}>
-              <Link href="/">
-                <TwitterOutlined style={{color: '#299aef', fontSize: '40px'}} />
-              </Link>
-            </Menu.Item>
-            <Menu.Item style={{margin: '30px'}}>
-              <Link href="/profile">
-                <UserOutlined style={{fontSize: '40px'}} />
-              </Link>
-            </Menu.Item>
-            <Menu.Item style={{margin: '30px'}}>
-              {me ? (
-                <LogoutOutlined onClick={onLogout} loading={logoutLoading} style={{fontSize: '40px'}} />
-              ) : (
-                <LoginOutlined onClick={onClickModal} style={{fontSize: '40px'}} />
-              )}
-            </Menu.Item>
-          </Menu>
+        <Col xs={4} sm={4} md={3} lg={3} xl={6} flex="auto">
+          <div style={{height: '100%'}}>
+            <Menu style={{height: '100%', textAlign: 'center', fontSize: '20px'}}>
+              <Menu.Item style={{marginTop: '30px'}}>
+                <Link href="/">
+                  <TwitterOutlined style={{color: '#299aef', fontSize: '1.4em'}} />
+                </Link>
+              </Menu.Item>
+              <Menu.Item style={{marginTop: '30px'}}>
+                <Link href="/">
+                  <HomeOutlined style={{color: '#299aef', fontSize: '1.4em'}} />
+                </Link>
+              </Menu.Item>
+              <Menu.Item style={{marginTop: '30px'}}>
+                <Link href="/profile">
+                  <UserOutlined style={{fontSize: '1.4em'}} />
+                </Link>
+              </Menu.Item>
+              <Menu.Item style={{marginTop: '30px'}}>
+                {me ? (
+                  <LogoutOutlined onClick={onLogout} style={{fontSize: '1.4em'}} />
+                ) : (
+                  <Link href="/login">
+                    <LoginOutlined style={{fontSize: '1.4em'}} />
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item style={{marginTop: '30px'}}>
+                <Link href="/">
+                  <EditOutlined style={{fontSize: '1.4em'}} />
+                </Link>
+              </Menu.Item>
+            </Menu>
+          </div>
         </Col>
-        <Col xs={24} md={14}>
-          <Menu style={{marginBottom: '10px', borderBottom: '1px solid'}}>
+        <Col xs={20} sm={20} md={13} lg={13} xl={10} flex="auto">
+          <Menu style={{marginBottom: '10px', borderBottom: '2px solid'}}>
             <Menu.Item>
               <Link href="/">
-                <a style={{fontWeight: 'bold', fontSize: '1.6em'}}>홈</a>
+                <a style={{fontWeight: 'bold', fontSize: '1.6em'}}>Home</a>
               </Link>
             </Menu.Item>
           </Menu>
           {children}
         </Col>
-        <Col xs={24} md={6}>
+        <Col xs={0} sm={0} md={8} lg={8} xl={8} flex="auto">
           <Menu>
             <Menu.Item>
               <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />
             </Menu.Item>
           </Menu>
-          {me ? <UserProfile /> : <LoginForm modalVisible={modalVisible} setModalVisible={setModalVisible} />}
         </Col>
       </Row>
     </div>

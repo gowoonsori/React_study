@@ -1,31 +1,39 @@
 import React, {useCallback, useEffect} from 'react';
 import Link from 'next/link';
 import {useDispatch, useSelector} from 'react-redux';
+import Router from 'next/router';
 
-import {Form, Input, Button, Modal} from 'antd';
+import {Form, Input, Button} from 'antd';
 import styled from 'styled-components';
 
 import useInput from '../hooks/useInput';
 import {loginRequestAction} from '../reducers/user';
 
+const LoginFormWrapper = styled.div`
+  width: 500px;
+  heigth: 500px;
+  text-align: center;
+  border: 1px solid;
+  display: table;
+  padding: 20px;
+  margin-top: 150px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+const FormWrapper = styled(Form)`
+  padding: 10px;
+  text-align: left;
+`;
 const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
 /*use Memo 이용 방법
 const style = useMemo(() => ({marginTop : 10}), []);
 */
-const FormWrapper = styled(Form)`
-  padding: 10px;
-`;
-const loginFormWrapper = styled.div`
-  width: 400px;
-  heigth: 400px;
-`;
 
 const Login = () => {
   const dispatch = useDispatch();
-  const {loginLoading} = useSelector((state) => state.user);
-
+  const {logInLoading, logInDone} = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
@@ -33,8 +41,14 @@ const Login = () => {
     dispatch(loginRequestAction({email, password}));
   }, [email, password]);
 
+  useEffect(() => {
+    if (logInDone) {
+      Router.replace('/');
+    }
+  }, [logInDone]);
+
   return (
-    <loginFormWrapper>
+    <LoginFormWrapper>
       <FormWrapper onFinish={onSubmitForm}>
         <div>
           <label htmlFor="user-email">이메일</label>
@@ -47,7 +61,7 @@ const Login = () => {
           <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
         </div>
         <ButtonWrapper>
-          <Button type="primary" htmlType="submit" loading={loginLoading}>
+          <Button type="primary" htmlType="submit" loading={logInLoading}>
             로그인
           </Button>
           <Link href="/signup">
@@ -57,7 +71,7 @@ const Login = () => {
           </Link>
         </ButtonWrapper>
       </FormWrapper>
-    </loginFormWrapper>
+    </LoginFormWrapper>
   );
 };
 

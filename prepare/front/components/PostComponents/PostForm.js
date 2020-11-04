@@ -2,9 +2,9 @@ import React, {useCallback, useRef, useEffect} from 'react';
 import {Form, Input, Button} from 'antd';
 import {useSelector, useDispatch} from 'react-redux';
 
-import {UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST} from '../reducers/post';
-import useInput from '../hooks/useInput';
-import {backUrl} from '../config/config';
+import {UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST} from '../../reducers/post';
+import useInput from '../../hooks/useInput';
+import {backUrl} from '../../config/config';
 
 const PostForm = () => {
   const {imagePaths, addPostDone} = useSelector((state) => state.post);
